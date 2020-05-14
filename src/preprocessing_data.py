@@ -1,4 +1,3 @@
-import sys
 import re
 import sys
 import pandas as pd
@@ -8,13 +7,13 @@ from sklearn.preprocessing import MultiLabelBinarizer
 
 class DataPreprocessing:
     """
-    Class used for Labelled Data Pre-processing: Data Cleaning and Feature Extraction
+    Class used for Data Pre-processing: Data Cleaning and Feature Extraction
     """
 
     def __init__(self, data_job_desc_path, data_user_path):
         """
-        :param data: Labelled training data for user-applied job description
-                     Labelled training data for user features
+        :param data_job_desc_path: Path where job description raw data is stored.
+               data_user_path: Path where user features raw data is stored.
         """
         self.data_job_desc = pd.read_csv(data_job_desc_path)
         self.data_user = pd.read_csv(data_user_path)
@@ -22,11 +21,10 @@ class DataPreprocessing:
     def handler(self):
         """
         Handle method to perform all the functionality.
-        :return: train_data: cleaned and featured engineered dataset ready to be used for training
+        :return: train_data: Cleaned and featured engineered dataset ready to be used for training.
         """
 
         raw_data = pd.merge(self.data_job_desc, self.data_user, on=['user_id']).drop(['user_id'], axis=1)
-
         data_company_encoded = self._encode_company_features(raw_data)
         data_jobtitle_encoded = self._encode_job_title_features(data_company_encoded)
         data_imputed = self._fill_missing_data(data_jobtitle_encoded)
@@ -36,11 +34,19 @@ class DataPreprocessing:
         return trained_data
 
     def _encode_company_features(self, data):
+        """
+        :param data: Data-frame after merging user data and job description data.
+        :return: Data-frame after binary encoding of company information.
+        """
 
         data_company_encoded = pd.get_dummies(data, prefix=['company'], columns =['company'])
         return data_company_encoded
 
     def _get_jobtitle_keywords(self, jobtitle):
+        """
+        :param jobtitle: String containing Job-title of a particular job.
+        :return: List of keywords extracted from the Job-title.
+        """
 
         manual_analysis_word_removal_list = ['(m/f/d)', 'mfd', 'team', '-']
         keywords = re.split(',| | &| ;', jobtitle)
@@ -51,6 +57,10 @@ class DataPreprocessing:
         return keywords
 
     def _encode_job_title_features(self, data):
+        """
+        :param data: Data-frame after merging user data and job description data.
+        :return: Data-frame after multi-label binary encoding of extracted job keywordd.
+        """
 
         data['jobtitle_keywords'] = ''
         for index, row in data.iterrows():
@@ -66,6 +76,10 @@ class DataPreprocessing:
         return data_jobtitle_encoded
 
     def _fill_missing_data(self, data):
+        """
+        :param data: Data-frame after merging user data and job description data, and feature engineered.
+        :return: Data-frame after filling in missing values in the features using KNN imputing.
+        """
 
         sys.setrecursionlimit(100000)
 
@@ -79,4 +93,3 @@ class DataPreprocessing:
         imputed_data = pd.DataFrame(imputed_data, columns=imput_cols)
         resultant_imputed_data = pd.concat([non_imputed_data, imputed_data], axis=1, join='inner')
         return resultant_imputed_data
-

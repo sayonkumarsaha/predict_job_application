@@ -5,6 +5,7 @@ from src.util_evaluation_scores import get_scores
 import sys
 sys.setrecursionlimit(100000)
 
+
 class TrainingEvaluation:
     """
     Class used for splitting the data into train/ test set, training, and evaluating a given model on the test set.
@@ -12,7 +13,7 @@ class TrainingEvaluation:
 
     def __init__(self, train_data, model):
         """
-        :param train_data: cleaned data with features ready to be trained upon.
+        :param train_data: Cleaned data with features ready to be trained upon.
         :param model: Model initialized with parameters ready for fitting and training.
         """
         self.train_data = train_data
@@ -53,7 +54,7 @@ class TrainingEvaluation:
         """
         :param X_train: Training Data to be scaled
         :param X_test: Testing Data to be scaled
-        :return: Standardize features by removing the mean and scaling to unit variance
+        :return: Standardized features by removing the mean and scaling to unit variance
         """
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)

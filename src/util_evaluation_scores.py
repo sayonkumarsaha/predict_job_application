@@ -5,7 +5,7 @@ def get_scores(y_pred, Y_test):
     """
     :param y_pred: Actual predictions from the model.
     :param Y_test: Labelled data for comparing predictions.
-    :return: scores: eEvaluation scores for the model based on prediction on test data.
+    :return: scores: Evaluation scores for the model based on prediction on test data.
     """
     accuracy = round(accuracy_score(Y_test, y_pred) * 100, 3)
     precision = round(precision_score(Y_test, y_pred) * 100, 3)
