@@ -6,7 +6,8 @@ Report: `job_application_prediction_report.pdf`
 2. Install libraries using `pip install -r requirement.txt`.
 3. Set the environment as the IPython kernel for Jupyter notebook execution: 
 `ipython kernel install --user --name=venv_job_pred`
-2. Run the following  Notebooks (`data_exploring.ipynb` & `data_training.ipynb`) after initiating: `jupyter lab`
+3. Add the dataset `job_desc.csv` and `user.csv` in `data/` directory.
+5. Run the following  Notebooks (`data_exploring.ipynb` & `data_training.ipynb`) after initiating: `jupyter lab`
 
 ### Modules Description:
 - `src.preprocessing_data.py` : Class used for data pre-processing: Data Cleaning and Feature Extraction.
